@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="NPT·UCI·SD">
+<meta name="description" content="Calculadora NPT - UCI IESS Santo Domingo">
+<link rel="manifest" href="manifest-npt.json">
+<title>NPT · UCI IESS Santo Domingo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:    #FFD700;
+    --gold2:   #FFC200;
+    --gold3:   #E6A800;
+    --black:   #0f0f0f;
+    --dark:    #1a1a1a;
+    --dark2:   #242424;
+    --dark3:   #2e2e2e;
+    --text:    #f5f5f5;
+    --muted:   #a0a0a0;
+    --border:  #333333;
+    --success: #22c55e;
+    --danger:  #ef4444;
+    --warn:    #f59e0b;
+    --shadow:  0 2px 16px rgba(0,0,0,.5);
+    --shadow-gold: 0 0 20px rgba(255,215,0,.15);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--text);min-height:100vh;padding-bottom:3rem;}
+
+  /* HEADER */
+  header{
+    background:var(--dark);
+    border-bottom:3px solid var(--gold);
+    padding:0;
+    position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 20px rgba(0,0,0,.6);
+  }
+  .header-inner{
+    max-width:640px;margin:auto;
+    display:flex;align-items:center;gap:1rem;
+    padding:.9rem 1.2rem;
+  }
+  .shield{
+    width:52px;height:52px;flex-shrink:0;
+    position:relative;
+  }
+  .shield svg{width:100%;height:100%;}
+  .header-text h1{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:1.3rem;font-weight:900;
+    color:var(--gold);letter-spacing:1px;
+    text-transform:uppercase;line-height:1.1;
+  }
+  .header-text p{font-size:.72rem;color:var(--muted);margin-top:2px;letter-spacing:.3px;}
+
+  /* STRIPE */
+  .stripe{
+    height:4px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0px,var(--gold) 20px,var(--black) 20px,var(--black) 40px);
+  }
+
+  main{max-width:640px;margin:auto;padding:1.2rem 1rem;display:flex;flex-direction:column;gap:1rem;}
+
+  /* CARDS */
+  .card{background:var(--dark2);border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;}
+  .card-header{
+    background:linear-gradient(90deg,var(--dark3) 0%,#1f1f1f 100%);
+    border-bottom:2px solid var(--gold3);
+    padding:.65rem 1rem;
+    display:flex;align-items:center;gap:.5rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:.95rem;font-weight:700;
+    color:var(--gold);letter-spacing:.8px;text-transform:uppercase;
+  }
+  .card-body{padding:1rem;display:flex;flex-direction:column;gap:.85rem;}
+
+  /* INPUTS */
+  .field{display:flex;flex-direction:column;gap:.3rem;}
+  label{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+  input{
+    width:100%;padding:.7rem 1rem;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    font-family:'DM Sans',inherit;font-size:1rem;
+    background:#111;color:var(--text);
+    transition:border .2s,box-shadow .2s;
+    -webkit-appearance:none;
+  }
+  input:focus{outline:none;border-color:var(--gold3);box-shadow:0 0 0 3px rgba(255,215,0,.12);}
+  input::placeholder{color:#555;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;}
+
+  /* INFO BOX */
+  .info-box{
+    background:#1f1a00;border:1.5px solid #4a3800;
+    border-radius:10px;padding:.65rem .9rem;
+    font-size:.78rem;color:#d4a000;line-height:1.5;
+    display:flex;gap:.5rem;
+  }
+
+  /* DEFAULT BADGE */
+  .default-badge{
+    display:inline-block;padding:.15rem .5rem;
+    background:#2a2a00;border:1px solid var(--gold3);
+    border-radius:6px;font-size:.7rem;color:var(--gold);
+    margin-left:.4rem;font-weight:600;
+  }
+
+  /* BOTÓN */
+  .btn-calc{
+    width:100%;padding:1rem;
+    background:linear-gradient(135deg,var(--gold2) 0%,var(--gold3) 100%);
+    color:var(--black);border:none;border-radius:12px;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:1.2rem;font-weight:900;letter-spacing:1px;
+    cursor:pointer;text-transform:uppercase;
+    box-shadow:0 4px 20px rgba(255,215,0,.3);
+    transition:transform .15s,box-shadow .15s;
+  }
+  .btn-calc:active{transform:scale(.98);box-shadow:0 2px 10px rgba(255,215,0,.2);}
+  .btn-reset{
+    width:100%;padding:.75rem;
+    background:transparent;color:var(--muted);
+    border:1.5px solid var(--border);border-radius:12px;
+    font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;
+    transition:all .2s;
+  }
+  .btn-reset:hover{border-color:var(--gold3);color:var(--gold);}
+
+  /* RESULTADOS */
+  #resultados{display:none;}
+  #resultados.visible{display:flex;flex-direction:column;gap:1rem;}
+
+  .res-card{background:var(--dark2);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+  .res-header{
+    background:linear-gradient(90deg,#1a1400 0%,#252000 100%);
+    border-bottom:2px solid var(--gold3);
+    padding:.65rem 1rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:.95rem;font-weight:800;color:var(--gold);
+    letter-spacing:.8px;text-transform:uppercase;
+    display:flex;align-items:center;gap:.5rem;
+  }
+  .res-body{padding:.9rem 1rem;display:flex;flex-direction:column;gap:.55rem;}
+
+  .res-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:.55rem .75rem;border-radius:8px;
+    background:#111;border:1px solid var(--border);gap:.5rem;
+  }
+  .res-name{font-size:.82rem;color:var(--muted);font-weight:500;flex:1;line-height:1.3;}
+  .res-val{font-family:'DM Mono',monospace;font-size:1rem;font-weight:600;color:var(--text);white-space:nowrap;}
+  .res-val.gold{color:var(--gold);}
+  .res-val.green{color:var(--success);}
+  .res-val.danger{color:var(--danger);}
+  .res-val.warn{color:var(--warn);}
+
+  .divider{height:1px;background:var(--border);margin:.15rem 0;}
+
+  /* RELACIÓN */
+  .relacion-box{
+    background:#1a1400;border:2px solid var(--gold3);
+    border-radius:12px;padding:.9rem 1rem;
+    display:flex;flex-direction:column;gap:.3rem;
+  }
+  .relacion-val{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:2rem;font-weight:900;color:var(--gold);
+    letter-spacing:1px;
+  }
+  .relacion-label{font-size:.8rem;color:var(--muted);}
+  .relacion-alert{font-size:.78rem;font-weight:600;margin-top:.2rem;}
+
+  /* BOMBAS */
+  .bomba-card{
+    background:#111;border:1px solid var(--border);
+    border-radius:10px;padding:.8rem 1rem;
+    display:flex;flex-direction:column;gap:.2rem;
+  }
+  .bomba-title{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+  .bomba-rate{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:1.8rem;font-weight:900;color:var(--gold);
+    line-height:1;
+  }
+  .bomba-unit{font-size:.78rem;color:var(--muted);}
+  .bomba-vol{font-size:.82rem;color:#888;margin-top:.1rem;}
+
+  .total-row{
+    display:flex;justify-content:space-between;align-items:center;
+    background:#1a1400;border:2px solid var(--gold3);
+    border-radius:10px;padding:.75rem 1rem;
+  }
+  .total-label{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;}
+  .total-val{font-family:'DM Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--text);}
+
+  /* COMPARTIR */
+  .btn-share{
+    display:flex;align-items:center;justify-content:center;gap:.5rem;
+    width:100%;padding:.85rem;
+    background:linear-gradient(135deg,#166534 0%,#15803d 100%);
+    color:#fff;border:none;border-radius:12px;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:1.1rem;font-weight:800;letter-spacing:.5px;
+    cursor:pointer;text-transform:uppercase;
+    box-shadow:0 4px 14px rgba(22,101,52,.4);
+  }
+
+  /* INSTALL */
+  #install-banner{display:none;background:var(--dark2);border:2px solid var(--gold3);border-radius:14px;padding:1rem;flex-direction:column;gap:.7rem;}
+  #install-banner.show{display:flex;}
+  .btn-install{padding:.7rem;background:var(--gold);color:var(--black);border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;}
+
+  .footer-note{text-align:center;font-size:.72rem;color:#555;padding:.5rem;line-height:1.6;}
+
+  @media(max-width:400px){.row2{grid-template-columns:1fr;}.row3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <!-- Escudo BSC style -->
+    <div class="shield">
+      <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
+        <!-- Escudo base -->
+        <path d="M50 5 L90 20 L90 65 Q90 90 50 105 Q10 90 10 65 L10 20 Z" fill="#1a1a1a" stroke="#FFD700" stroke-width="3"/>
+        <!-- Franja vertical izquierda -->
+        <path d="M10 20 L10 65 Q10 78 22 89 L22 20 Z" fill="#FFD700"/>
+        <!-- Franja vertical derecha -->
+        <path d="M78 20 L78 89 Q90 78 90 65 L90 20 Z" fill="#FFD700"/>
+        <!-- Texto UCI -->
+        <text x="50" y="52" font-family="Barlow Condensed,Arial Black,sans-serif" font-size="18" font-weight="900" fill="#FFD700" text-anchor="middle" letter-spacing="1">UCI</text>
+        <!-- Texto SD -->
+        <text x="50" y="70" font-family="Barlow Condensed,Arial Black,sans-serif" font-size="11" font-weight="700" fill="#FFD700" text-anchor="middle" letter-spacing="2">IESS·SD</text>
+        <!-- Estrella arriba -->
+        <polygon points="50,8 52,14 58,14 53,18 55,24 50,20 45,24 47,18 42,14 48,14" fill="#FFD700"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>NPT · UCI IESS</h1>
+      <p>Santo Domingo · Nutrición Parenteral Total</p>
+    </div>
+  </div>
+  <div class="stripe"></div>
+</header>
+
+<main>
+
+  <div id="install-banner">
+    <div style="font-size:.88rem;color:var(--muted);">📲 <span style="color:var(--gold);font-weight:700;">Instala NPT·UCI·SD</span> en tu celular para usarla sin internet.</div>
+    <button class="btn-install" onclick="installApp()">⬇️ Instalar App</button>
+  </div>
+
+  <!-- DATOS PACIENTE -->
+  <div class="card">
+    <div class="card-header">👤 Datos del Paciente</div>
+    <div class="card-body">
+      <div class="field">
+        <label>Peso del Paciente (kg)</label>
+        <input type="number" id="peso" placeholder="ej. 53" step="0.1" inputmode="decimal">
+      </div>
+    </div>
+  </div>
+
+  <!-- METAS NUTRICIONALES -->
+  <div class="card">
+    <div class="card-header">🎯 Metas Nutricionales</div>
+    <div class="card-body">
+      <div class="info-box">⭐ Valores por defecto basados en guías ASPEN/ESPEN. Modifica según criterio clínico.</div>
+      <div class="row2">
+        <div class="field">
+          <label>Energía (kcal/kg/día) <span class="default-badge">def: 20</span></label>
+          <input type="number" id="kcal" value="20" step="1" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>Proteína (g/kg/día) <span class="default-badge">def: 1.5</span></label>
+          <input type="number" id="prot" value="1.5" step="0.1" inputmode="decimal">
+        </div>
+      </div>
+      <div class="field">
+        <label>% Calorías No Proteicas como Dextrosa <span class="default-badge">def: 50%</span></label>
+        <input type="number" id="dex" value="50" step="5" min="0" max="100" inputmode="decimal">
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-calc" onclick="calcular()">⚡ Calcular NPT</button>
+  <button class="btn-reset" onclick="resetAll()">↺ Limpiar</button>
+
+  <!-- RESULTADOS -->
+  <div id="resultados">
+
+    <!-- METAS -->
+    <div class="res-card">
+      <div class="res-header">📊 Metas del Paciente</div>
+      <div class="res-body">
+        <div class="res-row">
+          <span class="res-name">⚡ Energía Total</span>
+          <span class="res-val gold" id="r-kcal">—</span>
+        </div>
+        <div class="res-row">
+          <span class="res-name">🥩 Proteína Total</span>
+          <span class="res-val" id="r-prot">—</span>
+        </div>
+        <div class="res-row">
+          <span class="res-name">🧪 Nitrógeno</span>
+          <span class="res-val" id="r-nitro">—</span>
+        </div>
+        <div class="res-row">
+          <span class="res-name">🍬 Kcal Dextrosa</span>
+          <span class="res-val" id="r-kcal-dex">—</span>
+        </div>
+        <div class="res-row">
+          <span class="res-name">🧈 Kcal Lípidos</span>
+          <span class="res-val" id="r-kcal-lip">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELACIÓN CNP:N -->
+    <div class="res-card">
+      <div class="res-header">⚖️ Relación CNP : Nitrógeno</div>
+      <div class="res-body">
+        <div class="relacion-box">
+          <div class="relacion-val" id="r-relacion">—</div>
+          <div class="relacion-label">Calorías No Proteicas por gramo de Nitrógeno</div>
+          <div class="relacion-alert" id="r-relacion-alert">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOMBAS -->
+    <div class="res-card">
+      <div class="res-header">💉 Programación de Bombas</div>
+      <div class="res-body">
+        <div class="bomba-card">
+          <div class="bomba-title">💧 Aminoácidos 15%</div>
+          <div><span class="bomba-rate" id="r-aa-rate">—</span> <span class="bomba-unit">ml/hora</span></div>
+          <div class="bomba-vol" id="r-aa-vol">—</div>
+        </div>
+        <div class="bomba-card">
+          <div class="bomba-title">🍬 Dextrosa 50%</div>
+          <div><span class="bomba-rate" id="r-dex-rate">—</span> <span class="bomba-unit">ml/hora</span></div>
+          <div class="bomba-vol" id="r-dex-vol">—</div>
+        </div>
+        <div class="bomba-card">
+          <div class="bomba-title">🧈 Lípidos 20%</div>
+          <div><span class="bomba-rate" id="r-lip-rate">—</span> <span class="bomba-unit">ml/hora</span></div>
+          <div class="bomba-vol" id="r-lip-vol">—</div>
+        </div>
+        <div class="total-row">
+          <span class="total-label">Volumen Total 24h</span>
+          <span class="total-val" id="r-vol-total">— ml</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-share" onclick="compartir()">📤 Compartir Indicaciones</button>
+    <p class="footer-note">Basado en guías ASPEN/ESPEN<br>Dextrosa IV 3.4 kcal/g · Lípidos 20% 10 kcal/g · AA 15%</p>
+  </div>
+
+</main>
+
+<script>
+  function calcular(){
+    const peso     = parseFloat(document.getElementById('peso').value);
+    const kcal_kg  = parseFloat(document.getElementById('kcal').value);
+    const prot_kg  = parseFloat(document.getElementById('prot').value);
+    const pct_dex  = parseFloat(document.getElementById('dex').value);
+
+    if(!peso||!kcal_kg||!prot_kg||isNaN(pct_dex)){alert('Completa todos los campos.');return;}
+    if(pct_dex<0||pct_dex>100){alert('El % de dextrosa debe estar entre 0 y 100.');return;}
+
+    const kcal_totales = peso * kcal_kg;
+    const prot_g       = peso * prot_kg;
+    const kcal_prot    = prot_g * 4.0;
+    const n_g          = prot_g / 6.25;
+    const kcal_np      = kcal_totales - kcal_prot;
+    const kcal_dex     = kcal_np * (pct_dex / 100);
+    const kcal_lip     = kcal_np * ((100 - pct_dex) / 100);
+    const dex_g        = kcal_dex / 3.4;
+    const lip_g        = kcal_lip / 10.0;
+    const relacion     = kcal_np / n_g;
+    const vol_aa       = prot_g / 0.15;
+    const vol_dex      = dex_g / 0.50;
+    const vol_lip      = lip_g / 0.20;
+    const vol_total    = vol_aa + vol_dex + vol_lip;
+
+    // Metas
+    document.getElementById('r-kcal').textContent     = kcal_totales.toFixed(0) + ' kcal';
+    document.getElementById('r-prot').textContent     = prot_g.toFixed(1) + ' g';
+    document.getElementById('r-nitro').textContent    = n_g.toFixed(1) + ' g';
+    document.getElementById('r-kcal-dex').textContent = kcal_dex.toFixed(0) + ' kcal';
+    document.getElementById('r-kcal-lip').textContent = kcal_lip.toFixed(0) + ' kcal';
+
+    // Relación
+    const relEl = document.getElementById('r-relacion');
+    const relAlert = document.getElementById('r-relacion-alert');
+    relEl.textContent = relacion.toFixed(0) + ' : 1';
+    if(relacion < 80){
+      relAlert.textContent = '⚠️ Relación baja — riesgo de catabolismo';
+      relAlert.style.color = '#ef4444';
+    } else if(relacion <= 150){
+      relAlert.textContent = '✅ Adecuada para fase aguda / hiperglicemia';
+      relAlert.style.color = '#22c55e';
+    } else {
+      relAlert.textContent = '⚠️ Relación alta — riesgo de sobrealimentación';
+      relAlert.style.color = '#f59e0b';
+    }
+
+    // Bombas
+    document.getElementById('r-aa-rate').textContent  = (vol_aa/24).toFixed(1);
+    document.getElementById('r-aa-vol').textContent   = 'Vol. total: ' + vol_aa.toFixed(0) + ' ml';
+    document.getElementById('r-dex-rate').textContent = (vol_dex/24).toFixed(1);
+    document.getElementById('r-dex-vol').textContent  = 'Vol. total: ' + vol_dex.toFixed(0) + ' ml';
+    document.getElementById('r-lip-rate').textContent = (vol_lip/24).toFixed(1);
+    document.getElementById('r-lip-vol').textContent  = 'Vol. total: ' + vol_lip.toFixed(0) + ' ml';
+    document.getElementById('r-vol-total').textContent = vol_total.toFixed(0) + ' ml';
+
+    const res = document.getElementById('resultados');
+    res.classList.add('visible');
+    res.scrollIntoView({behavior:'smooth',block:'start'});
+
+    window._npt = {peso,kcal_kg,prot_kg,pct_dex,kcal_totales,prot_g,n_g,kcal_np,relacion,vol_aa,vol_dex,vol_lip,vol_total};
+  }
+
+  function resetAll(){
+    document.getElementById('peso').value='';
+    document.getElementById('kcal').value='20';
+    document.getElementById('prot').value='1.5';
+    document.getElementById('dex').value='50';
+    document.getElementById('resultados').classList.remove('visible');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function compartir(){
+    const r = window._npt;
+    if(!r) return;
+    const txt =
+`⭐ NPT · UCI IESS Santo Domingo
+━━━━━━━━━━━━━━━━━━━━━
+Peso: ${r.peso} kg | Energía: ${r.kcal_kg} kcal/kg | Proteína: ${r.prot_kg} g/kg | Dextrosa: ${r.pct_dex}%
+
+📊 METAS
+⚡ Energía total: ${r.kcal_totales.toFixed(0)} kcal
+🥩 Proteína: ${r.prot_g.toFixed(1)} g
+🧪 Nitrógeno: ${r.n_g.toFixed(1)} g
+⚖️ Relación CNP:N = ${r.relacion.toFixed(0)}:1
+
+💉 BOMBAS (ml/hora)
+💧 Aminoácidos 15%: ${(r.vol_aa/24).toFixed(1)} ml/h (${r.vol_aa.toFixed(0)} ml)
+🍬 Dextrosa 50%:    ${(r.vol_dex/24).toFixed(1)} ml/h (${r.vol_dex.toFixed(0)} ml)
+🧈 Lípidos 20%:     ${(r.vol_lip/24).toFixed(1)} ml/h (${r.vol_lip.toFixed(0)} ml)
+━━━━━━━━━━━━━━━━━━━━━
+📦 Vol. Total 24h: ${r.vol_total.toFixed(0)} ml`;
+
+    if(navigator.share){navigator.share({title:'NPT UCI IESS SD',text:txt}).catch(()=>copyText(txt));}
+    else copyText(txt);
+  }
+
+  function copyText(t){
+    navigator.clipboard.writeText(t).then(()=>alert('✅ Copiado al portapapeles')).catch(()=>alert('No se pudo copiar.'));
+  }
+
+  let deferredPrompt=null;
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();deferredPrompt=e;
+    document.getElementById('install-banner').classList.add('show');
+  });
+  function installApp(){
+    if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('install-banner').classList.remove('show');});}
+    else alert('📱 Android: Menú Chrome → "Agregar a pantalla de inicio"\n🍎 iOS Safari: Compartir → "Añadir a inicio"');
+  }
+
+  if('serviceWorker' in navigator){
+    const sw=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>self.clients.claim());self.addEventListener('fetch',e=>{e.respondWith(caches.open('npt-uci-v1').then(c=>c.match(e.request).then(r=>r||fetch(e.request).then(nr=>{c.put(e.request,nr.clone());return nr;}))));});`;
+    navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
+  }
+</script>
+</body>
+</html>
