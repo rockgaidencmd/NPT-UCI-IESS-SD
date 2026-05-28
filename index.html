@@ -5,45 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NPT · UCI IESS SD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #050d1a;
-    --surface: #0a1628;
-    --card: #0f1f38;
-    --border: #1a3060;
-    --accent: #00c8ff;
-    --accent2: #0077ff;
-    --green: #00e5a0;
-    --yellow: #ffd166;
-    --red: #ff4d6d;
-    --text: #e8f0ff;
-    --muted: #6888b0;
-    --mono: 'Space Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --amarillo: #FFD100;
+    --rojo: #C8102E;
+    --negro: #0a0a0a;
+    --negro2: #141414;
+    --negro3: #1e1e1e;
+    --borde: #2e2e2e;
+    --borde-am: rgba(255,209,0,0.25);
+    --borde-rj: rgba(200,16,46,0.3);
+    --text: #f5f5f5;
+    --muted: #888;
+    --verde: #00e5a0;
+    --display: 'Oswald', sans-serif;
+    --body: 'DM Sans', sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: var(--bg);
+    background: var(--negro);
     color: var(--text);
-    font-family: var(--sans);
+    font-family: var(--body);
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* Grid background */
+  /* Fondo con patrón diagonal tipo camiseta */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 18px,
+        rgba(255,209,0,0.025) 18px,
+        rgba(255,209,0,0.025) 19px
+      );
     pointer-events: none;
     z-index: 0;
+  }
+
+  /* Barra superior decorativa */
+  .topbar {
+    height: 5px;
+    background: linear-gradient(90deg, var(--rojo) 0%, var(--amarillo) 50%, var(--rojo) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
 
   .container {
@@ -58,121 +71,157 @@
   header {
     text-align: center;
     padding: 32px 0 28px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--borde);
     margin-bottom: 28px;
+    animation: fadeDown 0.5s ease;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .escudo {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px rgba(255,209,0,0.4));
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%,100% { filter: drop-shadow(0 0 12px rgba(255,209,0,0.3)); }
+    50%      { filter: drop-shadow(0 0 28px rgba(255,209,0,0.7)); }
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(0,200,255,0.08);
-    border: 1px solid rgba(0,200,255,0.2);
+    background: linear-gradient(135deg, rgba(200,16,46,0.15), rgba(255,209,0,0.1));
+    border: 1px solid var(--borde-am);
     border-radius: 20px;
-    padding: 4px 14px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
+    padding: 5px 16px;
+    font-family: var(--display);
+    font-size: 11px;
+    color: var(--amarillo);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
-  .badge::before {
-    content: '';
+  .badge-dot {
     width: 6px; height: 6px;
-    background: var(--accent);
+    background: var(--rojo);
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent);
+    box-shadow: 0 0 8px var(--rojo);
     animation: pulse 2s infinite;
   }
 
   @keyframes pulse {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(0.8); }
   }
 
   h1 {
-    font-family: var(--mono);
-    font-size: clamp(20px, 5vw, 26px);
+    font-family: var(--display);
+    font-size: clamp(28px, 7vw, 38px);
     font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    text-transform: uppercase;
   }
 
-  h1 span { color: var(--accent); }
+  h1 .highlight {
+    color: var(--amarillo);
+    text-shadow: 0 0 30px rgba(255,209,0,0.5);
+  }
+
+  h1 .highlight-rj {
+    color: var(--rojo);
+  }
 
   .subtitle {
     margin-top: 8px;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--muted);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   /* Section labels */
   .section-label {
-    font-family: var(--mono);
-    font-size: 10px;
+    font-family: var(--display);
+    font-size: 12px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
+    color: var(--amarillo);
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  .section-label .num {
+    background: var(--rojo);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
   }
 
   .section-label::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
+    background: linear-gradient(90deg, var(--borde-am), transparent);
   }
 
   /* Cards */
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: var(--negro2);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
     padding: 20px;
     margin-bottom: 16px;
     transition: border-color 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   .card:focus-within {
-    border-color: rgba(0,200,255,0.35);
+    border-color: var(--borde-am);
+    box-shadow: 0 0 0 1px rgba(255,209,0,0.08);
   }
 
-  /* Input groups */
   .input-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
 
-  .input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .input-group.full { grid-column: 1 / -1; }
+  .input-group { display: flex; flex-direction: column; gap: 6px; }
 
   label {
     font-size: 11px;
     color: var(--muted);
     letter-spacing: 0.05em;
     font-weight: 500;
+    text-transform: uppercase;
   }
 
   input[type="number"] {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--negro3);
+    border: 1px solid var(--borde);
     border-radius: 8px;
     color: var(--text);
-    font-family: var(--mono);
-    font-size: 16px;
+    font-family: var(--display);
+    font-size: 18px;
     padding: 10px 14px;
     width: 100%;
     outline: none;
@@ -184,123 +233,121 @@
   input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
   input[type="number"]:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(0,200,255,0.1);
+    border-color: var(--amarillo);
+    box-shadow: 0 0 0 3px rgba(255,209,0,0.1);
   }
 
-  /* Select chips */
-  .chip-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 4px;
-  }
-
-  .chip-group label {
-    font-size: 12px;
+  /* Chips */
+  .chip-label-title {
+    font-size: 11px;
     color: var(--muted);
-    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
   }
 
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
-  .chip {
-    position: relative;
-  }
+  .chip { position: relative; }
 
-  .chip input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0; height: 0;
-  }
+  .chip input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
 
   .chip label {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--negro3);
+    border: 1px solid var(--borde);
     border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 12px;
-    font-family: var(--mono);
+    padding: 9px 16px;
+    font-size: 13px;
+    font-family: var(--display);
+    font-weight: 500;
     color: var(--muted);
     cursor: pointer;
     transition: all 0.15s;
-    white-space: nowrap;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
+    text-transform: none;
   }
 
   .chip input[type="radio"]:checked + label {
-    background: rgba(0,200,255,0.1);
-    border-color: var(--accent);
-    color: var(--accent);
+    background: linear-gradient(135deg, rgba(200,16,46,0.2), rgba(255,209,0,0.15));
+    border-color: var(--amarillo);
+    color: var(--amarillo);
+    box-shadow: 0 0 12px rgba(255,209,0,0.15);
   }
 
   .chip label:hover {
-    border-color: rgba(0,200,255,0.4);
+    border-color: rgba(255,209,0,0.4);
     color: var(--text);
   }
 
-  /* Calculate button */
+  /* Botón */
   .btn-calc {
     width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    padding: 17px;
+    background: linear-gradient(135deg, var(--rojo) 0%, #e8001f 50%, var(--rojo) 100%);
     border: none;
     border-radius: 12px;
-    color: #000;
-    font-family: var(--mono);
-    font-size: 14px;
+    color: #fff;
+    font-family: var(--display);
+    font-size: 16px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
     margin-top: 8px;
-    transition: opacity 0.2s, transform 0.1s;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(200,16,46,0.4);
+    position: relative;
+    overflow: hidden;
   }
 
-  .btn-calc:hover { opacity: 0.9; }
+  .btn-calc::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,209,0,0.15));
+    pointer-events: none;
+  }
+
+  .btn-calc:hover {
+    box-shadow: 0 6px 28px rgba(200,16,46,0.6);
+    transform: translateY(-1px);
+  }
+
   .btn-calc:active { transform: scale(0.98); }
 
   /* Results */
-  #results {
-    display: none;
-    animation: slideUp 0.35s ease;
-  }
+  #results { display: none; animation: fadeUp 0.4s ease; }
 
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
+  /* Result header */
   .result-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--borde);
   }
 
   .result-title {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--accent);
+    font-family: var(--display);
+    font-size: 14px;
+    color: var(--amarillo);
     letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .result-ts {
-    font-family: var(--mono);
-    font-size: 10px;
+    font-family: var(--display);
+    font-size: 11px;
     color: var(--muted);
+    letter-spacing: 0.05em;
   }
 
-  /* Metric grid */
+  /* Métricas */
   .metrics {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -309,29 +356,40 @@
   }
 
   .metric {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--negro3);
+    border: 1px solid var(--borde);
     border-radius: 10px;
-    padding: 14px 12px;
+    padding: 14px 10px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rojo), var(--amarillo));
   }
 
   .metric-val {
-    font-family: var(--mono);
-    font-size: 20px;
+    font-family: var(--display);
+    font-size: 22px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--amarillo);
     line-height: 1;
   }
 
   .metric-unit {
     font-size: 10px;
     color: var(--muted);
-    margin-top: 4px;
+    margin-top: 5px;
     letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  /* CNP:N Alert */
+  /* CNP:N */
   .cnp-alert {
     display: flex;
     align-items: center;
@@ -341,100 +399,75 @@
     margin-bottom: 16px;
     font-size: 13px;
     font-weight: 500;
+    font-family: var(--display);
+    letter-spacing: 0.03em;
   }
 
-  .cnp-alert.ok {
-    background: rgba(0,229,160,0.08);
-    border: 1px solid rgba(0,229,160,0.25);
-    color: var(--green);
-  }
-
-  .cnp-alert.warn-low {
-    background: rgba(255,75,109,0.08);
-    border: 1px solid rgba(255,75,109,0.25);
-    color: var(--red);
-  }
-
-  .cnp-alert.warn-high {
-    background: rgba(255,209,102,0.08);
-    border: 1px solid rgba(255,209,102,0.25);
-    color: var(--yellow);
-  }
+  .cnp-alert.ok        { background: rgba(0,229,160,0.08); border: 1px solid rgba(0,229,160,0.3); color: #00e5a0; }
+  .cnp-alert.warn-low  { background: rgba(200,16,46,0.08); border: 1px solid rgba(200,16,46,0.3); color: #ff4d6d; }
+  .cnp-alert.warn-high { background: rgba(255,209,0,0.08); border: 1px solid rgba(255,209,0,0.3); color: var(--amarillo); }
 
   .cnp-icon { font-size: 20px; }
 
-  /* Infusion table */
-  .infusion-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
+  /* Tabla */
+  .infusion-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 
   .infusion-table th {
-    font-family: var(--mono);
+    font-family: var(--display);
     font-size: 10px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--muted);
     text-transform: uppercase;
     text-align: left;
     padding: 8px 10px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--borde);
   }
 
   .infusion-table td {
-    padding: 12px 10px;
-    border-bottom: 1px solid rgba(26,48,96,0.5);
+    padding: 13px 10px;
+    border-bottom: 1px solid rgba(46,46,46,0.6);
     vertical-align: middle;
   }
 
   .infusion-table tr:last-child td { border-bottom: none; }
 
-  .infusion-table .item-name {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-  }
+  .item-name { display: flex; align-items: center; gap: 10px; }
 
-  .infusion-table .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .dot-aa  { background: #7c6fff; box-shadow: 0 0 8px rgba(124,111,255,0.5); }
+  .dot-dex { background: var(--amarillo); box-shadow: 0 0 8px rgba(255,209,0,0.5); }
+  .dot-lip { background: var(--verde); box-shadow: 0 0 8px rgba(0,229,160,0.5); }
 
-  .dot-aa { background: #7c6fff; }
-  .dot-dex { background: #ff9f43; }
-  .dot-lip { background: #00e5a0; }
+  .item-label { font-weight: 500; font-size: 13px; }
+
+  .conc-tag {
+    font-size: 10px;
+    background: rgba(255,209,0,0.06);
+    border: 1px solid rgba(255,209,0,0.15);
+    color: var(--muted);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: var(--display);
+    display: inline-block;
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+  }
 
   .rate {
-    font-family: var(--mono);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--accent);
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--amarillo);
   }
 
   .vol-total {
-    font-family: var(--mono);
+    font-family: var(--display);
     font-size: 12px;
     color: var(--muted);
   }
 
-  .conc-tag {
-    font-size: 10px;
-    background: rgba(0,200,255,0.08);
-    border: 1px solid rgba(0,200,255,0.15);
-    color: var(--muted);
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-family: var(--mono);
-    display: inline-block;
-    margin-top: 2px;
-  }
-
-  /* Progress bars */
-  .macro-bars {
-    margin-top: 16px;
-  }
+  /* Barras */
+  .macro-bars { margin-top: 18px; }
 
   .bar-row {
     display: flex;
@@ -444,33 +477,85 @@
     font-size: 12px;
   }
 
-  .bar-label { width: 80px; color: var(--muted); }
+  .bar-label { width: 80px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
 
   .bar-track {
     flex: 1;
-    height: 6px;
-    background: var(--surface);
-    border-radius: 3px;
+    height: 7px;
+    background: var(--negro3);
+    border-radius: 4px;
     overflow: hidden;
+    border: 1px solid var(--borde);
   }
 
-  .bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.8s ease;
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.9s cubic-bezier(0.34,1.56,0.64,1); }
+
+  .fill-aa  { background: linear-gradient(90deg, #5a4fff, #7c6fff); }
+  .fill-dex { background: linear-gradient(90deg, #e8a000, var(--amarillo)); }
+  .fill-lip { background: linear-gradient(90deg, #00b87a, var(--verde)); }
+
+  .bar-val { width: 46px; text-align: right; font-family: var(--display); font-size: 12px; color: var(--text); }
+
+  /* Botón compartir */
+  .btn-share {
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid var(--borde-am);
+    border-radius: 12px;
+    color: var(--amarillo);
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
-  .bar-val {
-    width: 60px;
-    text-align: right;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
+  .btn-share:hover {
+    background: rgba(255,209,0,0.06);
+    border-color: var(--amarillo);
+    box-shadow: 0 0 16px rgba(255,209,0,0.15);
   }
 
-  .fill-aa { background: #7c6fff; }
-  .fill-dex { background: #ff9f43; }
-  .fill-lip { background: #00e5a0; }
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--negro2);
+    border: 1px solid var(--borde-am);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-family: var(--display);
+    font-size: 13px;
+    color: var(--amarillo);
+    letter-spacing: 0.06em;
+    z-index: 999;
+    transition: transform 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Error */
+  .error-msg {
+    background: rgba(200,16,46,0.1);
+    border: 1px solid rgba(200,16,46,0.35);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ff4d6d;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
 
   /* Footer */
   footer {
@@ -478,138 +563,124 @@
     padding-top: 32px;
     font-size: 11px;
     color: var(--muted);
-    font-family: var(--mono);
-    letter-spacing: 0.05em;
+    font-family: var(--display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .error-msg {
-    background: rgba(255,75,109,0.08);
-    border: 1px solid rgba(255,75,109,0.3);
-    border-radius: 8px;
-    padding: 12px 16px;
-    color: var(--red);
-    font-size: 13px;
-    margin-top: 12px;
-    display: none;
-  }
+  footer span { color: var(--amarillo); }
 
   @media (max-width: 480px) {
     .metrics { grid-template-columns: 1fr 1fr; }
     .input-row { grid-template-columns: 1fr; }
-    .input-group.full { grid-column: 1; }
     .chips { flex-direction: column; }
     .chip label { width: 100%; }
   }
 </style>
 </head>
 <body>
+<div class="topbar"></div>
 <div class="container">
 
   <header>
-    <div class="badge">UCI · IESS Santo Domingo / Jipijapa</div>
-    <h1>Calculadora <span>NPT</span></h1>
+    <div class="escudo">🏆</div>
+    <div class="badge"><div class="badge-dot"></div>UCI · IESS Santo Domingo / Jipijapa</div>
+    <h1><span class="highlight-rj">Calc</span><span class="highlight">NPT</span></h1>
     <p class="subtitle">Nutrición Parenteral Total · Versión Avanzada</p>
   </header>
 
   <!-- DATOS CLÍNICOS -->
-  <div class="section-label">01 · Datos Clínicos</div>
+  <div class="section-label"><span class="num">01</span> Datos Clínicos</div>
   <div class="card">
     <div class="input-row">
       <div class="input-group">
-        <label>Peso del paciente</label>
-        <input type="number" id="peso" placeholder="kg" min="1" max="300" step="0.1"/>
+        <label>Peso del paciente (kg)</label>
+        <input type="number" id="peso" placeholder="70" min="1" max="300" step="0.1"/>
       </div>
       <div class="input-group">
-        <label>Meta energética</label>
-        <input type="number" id="kcal_kg" placeholder="kcal/kg/día" min="5" max="60" step="0.5"/>
+        <label>Meta energética (kcal/kg/día)</label>
+        <input type="number" id="kcal_kg" placeholder="25" min="5" max="60" step="0.5"/>
       </div>
       <div class="input-group">
-        <label>Meta proteica</label>
-        <input type="number" id="prot_kg" placeholder="g/kg/día" min="0.5" max="3" step="0.1"/>
+        <label>Meta proteica (g/kg/día)</label>
+        <input type="number" id="prot_kg" placeholder="1.5" min="0.5" max="3" step="0.1"/>
       </div>
       <div class="input-group">
-        <label>% CNP como dextrosa</label>
-        <input type="number" id="pct_dex" placeholder="% (ej: 50)" min="0" max="100" step="5"/>
+        <label>% CNP como Dextrosa</label>
+        <input type="number" id="pct_dex" placeholder="50" min="0" max="100" step="5"/>
       </div>
     </div>
   </div>
 
   <!-- LÍPIDOS -->
-  <div class="section-label">02 · Emulsión Lipídica</div>
+  <div class="section-label"><span class="num">02</span> Emulsión Lipídica</div>
   <div class="card">
-    <div class="chip-group">
-      <label>Disponibilidad en farmacia</label>
-      <div class="chips">
-        <div class="chip">
-          <input type="radio" name="lipidos" id="lip1" value="1" checked/>
-          <label for="lip1">20% · 10 kcal/g</label>
-        </div>
-        <div class="chip">
-          <input type="radio" name="lipidos" id="lip2" value="2"/>
-          <label for="lip2">10% · 11 kcal/g</label>
-        </div>
-        <div class="chip">
-          <input type="radio" name="lipidos" id="lip3" value="3"/>
-          <label for="lip3">Pura · 9 kcal/g</label>
-        </div>
+    <span class="chip-label-title">Disponibilidad en farmacia</span>
+    <div class="chips">
+      <div class="chip">
+        <input type="radio" name="lipidos" id="lip1" value="1" checked/>
+        <label for="lip1">20% · 10 kcal/g</label>
+      </div>
+      <div class="chip">
+        <input type="radio" name="lipidos" id="lip2" value="2"/>
+        <label for="lip2">10% · 11 kcal/g</label>
+      </div>
+      <div class="chip">
+        <input type="radio" name="lipidos" id="lip3" value="3"/>
+        <label for="lip3">Pura · 9 kcal/g</label>
       </div>
     </div>
   </div>
 
   <!-- AMINOÁCIDOS -->
-  <div class="section-label">03 · Aminoácidos</div>
+  <div class="section-label"><span class="num">03</span> Aminoácidos</div>
   <div class="card">
-    <div class="chip-group">
-      <label>Disponibilidad en farmacia</label>
-      <div class="chips">
-        <div class="chip">
-          <input type="radio" name="aa" id="aa1" value="1" checked/>
-          <label for="aa1">15%</label>
-        </div>
-        <div class="chip">
-          <input type="radio" name="aa" id="aa2" value="2"/>
-          <label for="aa2">10%</label>
-        </div>
+    <span class="chip-label-title">Disponibilidad en farmacia</span>
+    <div class="chips">
+      <div class="chip">
+        <input type="radio" name="aa" id="aa1" value="1" checked/>
+        <label for="aa1">15%</label>
+      </div>
+      <div class="chip">
+        <input type="radio" name="aa" id="aa2" value="2"/>
+        <label for="aa2">10%</label>
       </div>
     </div>
   </div>
 
   <!-- DEXTROSA -->
-  <div class="section-label">04 · Dextrosa</div>
+  <div class="section-label"><span class="num">04</span> Dextrosa</div>
   <div class="card">
-    <div class="chip-group">
-      <label>Disponibilidad en farmacia</label>
-      <div class="chips">
-        <div class="chip">
-          <input type="radio" name="dex" id="dex1" value="1" checked/>
-          <label for="dex1">50%</label>
-        </div>
-        <div class="chip">
-          <input type="radio" name="dex" id="dex2" value="2"/>
-          <label for="dex2">30%</label>
-        </div>
-        <div class="chip">
-          <input type="radio" name="dex" id="dex3" value="3"/>
-          <label for="dex3">10%</label>
-        </div>
+    <span class="chip-label-title">Disponibilidad en farmacia</span>
+    <div class="chips">
+      <div class="chip">
+        <input type="radio" name="dex" id="dex1" value="1" checked/>
+        <label for="dex1">50%</label>
+      </div>
+      <div class="chip">
+        <input type="radio" name="dex" id="dex2" value="2"/>
+        <label for="dex2">30%</label>
+      </div>
+      <div class="chip">
+        <input type="radio" name="dex" id="dex3" value="3"/>
+        <label for="dex3">10%</label>
       </div>
     </div>
   </div>
 
-  <button class="btn-calc" onclick="calcular()">⟶ CALCULAR NPT</button>
+  <button class="btn-calc" onclick="calcular()">⟶ Calcular NPT</button>
   <div class="error-msg" id="error-msg"></div>
 
   <!-- RESULTADOS -->
   <div id="results">
     <br/>
-    <div class="section-label">05 · Reporte de Indicaciones</div>
+    <div class="section-label"><span class="num">05</span> Reporte de Indicaciones</div>
     <div class="card">
       <div class="result-header">
-        <span class="result-title">REPORTE NPT</span>
+        <span class="result-title">📋 Reporte NPT</span>
         <span class="result-ts" id="timestamp"></span>
       </div>
 
-      <!-- Métricas principales -->
       <div class="metrics">
         <div class="metric">
           <div class="metric-val" id="res-kcal">—</div>
@@ -625,18 +696,16 @@
         </div>
       </div>
 
-      <!-- Alerta CNP:N -->
       <div class="cnp-alert" id="cnp-alert">
         <span class="cnp-icon" id="cnp-icon"></span>
         <span id="cnp-text"></span>
       </div>
 
-      <!-- Tabla de infusión -->
       <table class="infusion-table">
         <thead>
           <tr>
             <th>Solución</th>
-            <th>ml/hora</th>
+            <th>ml / hora</th>
             <th>Total 24h</th>
           </tr>
         </thead>
@@ -646,7 +715,7 @@
               <div class="item-name">
                 <div class="dot dot-aa"></div>
                 <div>
-                  <div>Aminoácidos</div>
+                  <div class="item-label">Aminoácidos</div>
                   <span class="conc-tag" id="tag-aa"></span>
                 </div>
               </div>
@@ -659,7 +728,7 @@
               <div class="item-name">
                 <div class="dot dot-dex"></div>
                 <div>
-                  <div>Dextrosa</div>
+                  <div class="item-label">Dextrosa</div>
                   <span class="conc-tag" id="tag-dex"></span>
                 </div>
               </div>
@@ -672,7 +741,7 @@
               <div class="item-name">
                 <div class="dot dot-lip"></div>
                 <div>
-                  <div>Lípidos</div>
+                  <div class="item-label">Lípidos</div>
                   <span class="conc-tag" id="tag-lip"></span>
                 </div>
               </div>
@@ -683,7 +752,6 @@
         </tbody>
       </table>
 
-      <!-- Barras de macros -->
       <div class="macro-bars">
         <div class="bar-row">
           <span class="bar-label">Proteínas</span>
@@ -701,11 +769,17 @@
           <span class="bar-val" id="pct-lip-res">—</span>
         </div>
       </div>
+
+      <button class="btn-share" onclick="compartir()">
+        📤 Compartir Resultados
+      </button>
     </div>
   </div>
 
-  <footer>NPT · UCI IESS SD · v2.0</footer>
+  <footer>CalcNPT · UCI IESS SD · <span>v2.0</span> · Arrib' el Ídolo 🟡🔴</footer>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
   const lipidosData = {
@@ -713,7 +787,7 @@
     "2": { desc: "Emulsión 10%", factor: 11.0, conc: 0.10 },
     "3": { desc: "Grasa pura",   factor:  9.0, conc: 1.00 }
   };
-  const aaData = {
+  const aaData  = {
     "1": { desc: "AA 15%", conc: 0.15 },
     "2": { desc: "AA 10%", conc: 0.10 }
   };
@@ -723,11 +797,20 @@
     "3": { desc: "Dextrosa 10%", conc: 0.10 }
   };
 
+  let ultimoReporte = null;
+
   function showError(msg) {
     const el = document.getElementById('error-msg');
     el.textContent = '⚠ ' + msg;
     el.style.display = 'block';
     setTimeout(() => el.style.display = 'none', 4000);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
   }
 
   function calcular() {
@@ -736,15 +819,12 @@
     const prot_kg = parseFloat(document.getElementById('prot_kg').value);
     const pct_dex = parseFloat(document.getElementById('pct_dex').value);
 
-    if ([peso, kcal_kg, prot_kg, pct_dex].some(isNaN)) {
+    if ([peso, kcal_kg, prot_kg, pct_dex].some(isNaN))
       return showError('Completa todos los campos antes de calcular.');
-    }
-    if (peso <= 0 || kcal_kg <= 0 || prot_kg <= 0) {
+    if (peso <= 0 || kcal_kg <= 0 || prot_kg <= 0)
       return showError('Los valores deben ser mayores a cero.');
-    }
-    if (pct_dex < 0 || pct_dex > 100) {
-      return showError('El porcentaje de dextrosa debe estar entre 0 y 100.');
-    }
+    if (pct_dex < 0 || pct_dex > 100)
+      return showError('El % de dextrosa debe estar entre 0 y 100.');
 
     const lipSel = lipidosData[document.querySelector('input[name="lipidos"]:checked').value];
     const aaSel  = aaData[document.querySelector('input[name="aa"]:checked').value];
@@ -755,80 +835,134 @@
     const prot_g       = peso * prot_kg;
     const kcal_prot    = prot_g * 4.0;
     const n_g          = prot_g / 6.25;
+    const kcal_np      = kcal_totales - kcal_prot;
+    const kcal_dex_v   = kcal_np * (pct_dex / 100.0);
+    const kcal_lip_v   = kcal_np * ((100.0 - pct_dex) / 100.0);
+    const dex_g        = kcal_dex_v / 3.4;
+    const lip_g        = kcal_lip_v / lipSel.factor;
+    const relacion     = n_g > 0 ? kcal_np / n_g : 0;
+    const vol_aa       = prot_g / aaSel.conc;
+    const vol_dex      = dex_g  / dexSel.conc;
+    const vol_lip      = lip_g  / lipSel.conc;
+    const pct_aa_k     = (kcal_prot   / kcal_totales * 100).toFixed(1);
+    const pct_dex_k    = (kcal_dex_v  / kcal_totales * 100).toFixed(1);
+    const pct_lip_k    = (kcal_lip_v  / kcal_totales * 100).toFixed(1);
 
-    const kcal_np  = kcal_totales - kcal_prot;
-    const kcal_dex = kcal_np * (pct_dex / 100.0);
-    const kcal_lip = kcal_np * ((100.0 - pct_dex) / 100.0);
+    // Guardar reporte para compartir
+    const now = new Date();
+    const ts  = now.toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit' });
 
-    const dex_g = kcal_dex / 3.4;
-    const lip_g = kcal_lip / lipSel.factor;
+    ultimoReporte = {
+      peso, kcal_kg, prot_kg, pct_dex,
+      kcal_totales, prot_g, n_g, relacion,
+      aaSel, dexSel, lipSel,
+      vol_aa, vol_dex, vol_lip,
+      pct_aa_k, pct_dex_k, pct_lip_k,
+      ts
+    };
 
-    const relacion = n_g > 0 ? kcal_np / n_g : 0;
-
-    const vol_aa  = prot_g / aaSel.conc;
-    const vol_dex = dex_g  / dexSel.conc;
-    const vol_lip = lip_g  / lipSel.conc;
-
-    // Porcentajes calóricos
-    const pct_aa_kcal  = (kcal_prot / kcal_totales * 100).toFixed(1);
-    const pct_dex_kcal = (kcal_dex  / kcal_totales * 100).toFixed(1);
-    const pct_lip_kcal = (kcal_lip  / kcal_totales * 100).toFixed(1);
-
-    // Rellenar UI
+    // UI
     document.getElementById('res-kcal').textContent  = Math.round(kcal_totales);
     document.getElementById('res-prot').textContent  = prot_g.toFixed(1);
     document.getElementById('res-nitro').textContent = n_g.toFixed(1);
 
-    // CNP:N con lógica corregida
+    // CNP:N
     const alertEl = document.getElementById('cnp-alert');
     const iconEl  = document.getElementById('cnp-icon');
     const textEl  = document.getElementById('cnp-text');
-
     alertEl.className = 'cnp-alert';
     if (relacion < 80) {
       alertEl.classList.add('warn-low');
       iconEl.textContent = '⚠';
-      textEl.textContent = `Relación CNP:N ${relacion.toFixed(0)}:1 — Aporte proteico muy agresivo`;
+      textEl.textContent = `CNP:N ${relacion.toFixed(0)}:1 — Aporte proteico muy agresivo`;
     } else if (relacion <= 150) {
       alertEl.classList.add('ok');
       iconEl.textContent = '✓';
-      textEl.textContent = `Relación CNP:N ${relacion.toFixed(0)}:1 — Adecuada para estrés crítico`;
+      textEl.textContent = `CNP:N ${relacion.toFixed(0)}:1 — Adecuada para estrés crítico`;
     } else {
       alertEl.classList.add('warn-high');
       iconEl.textContent = '⚠';
-      textEl.textContent = `Relación CNP:N ${relacion.toFixed(0)}:1 — Riesgo de sobrealimentación`;
+      textEl.textContent = `CNP:N ${relacion.toFixed(0)}:1 — Riesgo de sobrealimentación`;
     }
 
-    // Infusión
-    document.getElementById('tag-aa').textContent  = aaSel.desc;
-    document.getElementById('rate-aa').textContent = (vol_aa/24).toFixed(1) + ' ml/h';
-    document.getElementById('vol-aa').textContent  = Math.round(vol_aa) + ' ml';
-
+    // Tabla
+    document.getElementById('tag-aa').textContent   = aaSel.desc;
+    document.getElementById('rate-aa').textContent  = (vol_aa/24).toFixed(1) + ' ml/h';
+    document.getElementById('vol-aa').textContent   = Math.round(vol_aa) + ' ml';
     document.getElementById('tag-dex').textContent  = dexSel.desc;
     document.getElementById('rate-dex').textContent = (vol_dex/24).toFixed(1) + ' ml/h';
     document.getElementById('vol-dex').textContent  = Math.round(vol_dex) + ' ml';
-
     document.getElementById('tag-lip').textContent  = lipSel.desc;
     document.getElementById('rate-lip').textContent = (vol_lip/24).toFixed(1) + ' ml/h';
     document.getElementById('vol-lip').textContent  = Math.round(vol_lip) + ' ml';
 
     // Barras
-    document.getElementById('bar-aa').style.width  = pct_aa_kcal + '%';
-    document.getElementById('bar-dex').style.width = pct_dex_kcal + '%';
-    document.getElementById('bar-lip').style.width = pct_lip_kcal + '%';
-    document.getElementById('pct-aa').textContent      = pct_aa_kcal + '%';
-    document.getElementById('pct-dex-res').textContent = pct_dex_kcal + '%';
-    document.getElementById('pct-lip-res').textContent = pct_lip_kcal + '%';
+    document.getElementById('bar-aa').style.width   = pct_aa_k + '%';
+    document.getElementById('bar-dex').style.width  = pct_dex_k + '%';
+    document.getElementById('bar-lip').style.width  = pct_lip_k + '%';
+    document.getElementById('pct-aa').textContent      = pct_aa_k + '%';
+    document.getElementById('pct-dex-res').textContent = pct_dex_k + '%';
+    document.getElementById('pct-lip-res').textContent = pct_lip_k + '%';
 
-    // Timestamp
-    const now = new Date();
-    document.getElementById('timestamp').textContent =
-      now.toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('timestamp').textContent = ts;
 
-    // Mostrar
     const res = document.getElementById('results');
     res.style.display = 'block';
     res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function compartir() {
+    if (!ultimoReporte) return;
+    const r = ultimoReporte;
+
+    let cnpTxt = '';
+    if (r.relacion < 80)        cnpTxt = `⚠ CNP:N ${r.relacion.toFixed(0)}:1 — Aporte muy agresivo`;
+    else if (r.relacion <= 150) cnpTxt = `✅ CNP:N ${r.relacion.toFixed(0)}:1 — Adecuada para UCI`;
+    else                        cnpTxt = `⚠ CNP:N ${r.relacion.toFixed(0)}:1 — Riesgo sobrealimentación`;
+
+    const texto =
+`📋 REPORTE NPT — UCI IESS SD
+🕐 ${r.ts}
+
+👤 Paciente: ${r.peso} kg
+⚡ Energía: ${Math.round(r.kcal_totales)} kcal (${r.kcal_kg} kcal/kg/día)
+🥩 Proteína: ${r.prot_g.toFixed(1)} g (${r.prot_kg} g/kg/día)
+🔬 Nitrógeno: ${r.n_g.toFixed(1)} g
+${cnpTxt}
+
+💉 BOMBAS DE INFUSIÓN (24h):
+• ${r.aaSel.desc}: ${(r.vol_aa/24).toFixed(1)} ml/h — Total: ${Math.round(r.vol_aa)} ml
+• ${r.dexSel.desc}: ${(r.vol_dex/24).toFixed(1)} ml/h — Total: ${Math.round(r.vol_dex)} ml
+• ${r.lipSel.desc}: ${(r.vol_lip/24).toFixed(1)} ml/h — Total: ${Math.round(r.vol_lip)} ml
+
+📊 Distribución calórica:
+  Proteínas ${r.pct_aa_k}% | Dextrosa ${r.pct_dex_k}% | Lípidos ${r.pct_lip_k}%
+
+— CalcNPT · UCI IESS SD v2.0`;
+
+    if (navigator.share) {
+      navigator.share({ title: 'Reporte NPT · UCI IESS SD', text: texto })
+        .catch(() => copiarAlPortapapeles(texto));
+    } else {
+      copiarAlPortapapeles(texto);
+    }
+  }
+
+  function copiarAlPortapapeles(texto) {
+    navigator.clipboard.writeText(texto)
+      .then(() => showToast('✓ Reporte copiado al portapapeles'))
+      .catch(() => {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('✓ Reporte copiado al portapapeles');
+      });
   }
 </script>
 </body>
